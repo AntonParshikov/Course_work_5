@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 
 
 def hh_get_vacancies(vacancy_name):
+
     """Запрос к API HH"""
 
     params = {
@@ -23,6 +24,7 @@ def hh_get_vacancies(vacancy_name):
 
 
 def vacancies_pars(js_obj):
+
     """Парсинг полученных вакансий"""
 
     all_vacancy = []
@@ -42,6 +44,7 @@ def vacancies_pars(js_obj):
 
 
 def csv_writer(user_input=input('Введите вакансию: ')):
+
     """Сохранение данных в формате csv"""
 
     cols = ['id', 'Название_вакансии', 'З/п_от', 'З/п_до', 'Работодатель', 'Ссылка', 'Требования']
@@ -62,10 +65,13 @@ connection = psycopg2.connect(host="localhost",
 
 
 def create_table():
+
+    """Создание таблицы в БД"""
+
     with connection as conn:
         with conn.cursor() as cursor:
             cursor.execute("""
-                    CREATE TABLE IF NOT EXISTS vacancies (
+                    CREATE TABLE IF NOT EXISTS vacancies(
                         id INT PRIMARY KEY,
                         Название_вакансии TEXT,
                         Зп_от TEXT,
