@@ -35,9 +35,9 @@ class DBManager:
         conn = self.connect()
         cur = conn.cursor()
         cur.execute("""
-            SELECT company_name, vacancy_title, salary, link
+            SELECT company_name, vacancy_name, salary_from, url
             FROM vacancies
-            ORDER BY salary DESC
+            ORDER BY salary_from DESC
         """)
         result = cur.fetchall()
         cur.close()
@@ -48,7 +48,7 @@ class DBManager:
         conn = self.connect()
         cur = conn.cursor()
         cur.execute("""
-            SELECT AVG(salary)
+            SELECT AVG(salary_from)
             FROM vacancies
         """)
         result = cur.fetchone()[0]
@@ -61,10 +61,10 @@ class DBManager:
         conn = self.connect()
         cur = conn.cursor()
         cur.execute(f"""
-            SELECT company_name, vacancy_title, salary, link
+            SELECT company_name, vacancy_name, salary_from, url
             FROM vacancies
-            WHERE salary > {avg_salary}
-            ORDER BY salary DESC
+            WHERE salary_from > {avg_salary}
+            ORDER BY salary_from DESC
         """)
         result = cur.fetchall()
         cur.close()
@@ -75,12 +75,22 @@ class DBManager:
         conn = self.connect()
         cur = conn.cursor()
         cur.execute(f"""
-            SELECT company_name, vacancy_title, salary, link
+            SELECT company_name, vacancy_name, salary_from, url
             FROM vacancies
-            WHERE vacancy_title ILIKE '%{keyword}%'
-            ORDER BY salary DESC
+            WHERE vacancy_name LIKE '%{keyword}%'
+            ORDER BY salary_from DESC
         """)
         result = cur.fetchall()
         cur.close()
         conn.close()
         return result
+
+
+if __name__ == '__main__':
+    client = DBManager('Course_5_database')
+    # vac = client.get_vacancies_with_keyword('QA')
+    # avg_salary = client.get_avg_salary()
+    # all_vacancies = client.get_all_vacancies()
+    # higher_salary = client.get_vacancies_with_higher_salary()
+    pass
+

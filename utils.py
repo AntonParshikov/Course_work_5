@@ -6,7 +6,6 @@ from sqlalchemy import create_engine
 
 
 def hh_get_vacancies(vacancy_name):
-
     """Запрос к API HH"""
 
     params = {
@@ -24,7 +23,6 @@ def hh_get_vacancies(vacancy_name):
 
 
 def vacancies_pars(js_obj):
-
     """Парсинг полученных вакансий"""
 
     all_vacancy = []
@@ -32,22 +30,21 @@ def vacancies_pars(js_obj):
         salary = obj.get('salary') or {}
         all_vacancy.append({
             'id': obj['id'],
-            'Название_вакансии': obj['name'],
-            'З/п_от': salary.get('from', 0),
-            'З/п_до': salary.get('to', 0),
-            'Работодатель': obj['employer']['name'],
-            'Ссылка': obj['url'],
-            'Требования': obj['snippet']['requirement']
+            'vacancy_name': obj['name'],
+            'salary_from': salary.get('from', 0),
+            'salary_to': salary.get('to', 0),
+            'company_name': obj['employer']['name'],
+            'url': obj['url'],
+            'requirements': obj['snippet']['requirement']
         })
 
     return all_vacancy
 
 
 def csv_writer(user_input=input('Введите вакансию: ')):
-
     """Сохранение данных в формате csv"""
 
-    cols = ['id', 'Название_вакансии', 'З/п_от', 'З/п_до', 'Работодатель', 'Ссылка', 'Требования']
+    cols = ['id', 'vacancy_name', 'salary_from', 'salary_to', 'company_name', 'url', 'requirements']
 
     with open('vacancies.csv', 'w', newline='', encoding='utf-8') as file:
         wr = csv.DictWriter(file, fieldnames=cols)
@@ -65,7 +62,6 @@ connection = psycopg2.connect(host="localhost",
 
 
 def create_table():
-
     """Создание таблицы в БД"""
 
     with connection as conn:
@@ -73,13 +69,13 @@ def create_table():
             cursor.execute("""
                     CREATE TABLE IF NOT EXISTS vacancies(
                         id INT PRIMARY KEY,
-                        Название_вакансии TEXT,
-                        Зп_от TEXT,
-                        Зп_до TEXT,
-                        Работодатель TEXT,
-                        Ссылка TEXT,
-                        Требования TEXT
-                        
+                        vacancy_name TEXT,
+                        salary_from TEXT,
+                        salary_to TEXT,
+                        company_name TEXT,
+                        url TEXT,
+                        requirements TEXT
+
                     );
                 """)
 
@@ -92,7 +88,13 @@ def table_add_data():
                 next(reader)
                 for row in reader:
                     cursor.execute(
-                        "INSERT INTO vacancies (id, Название_вакансии, Зп_от, Зп_до, Работодатель, Ссылка, Требования)"
+                        "INSERT INTO vacancies (id,"
+                        "vacancy_name, "
+                        "salary_from, "
+                        "salary_to, "
+                        "company_name, "
+                        "url, "
+                        "requirements)"
                         "VALUES (%s, %s, %s, %s, %s, %s, %s)",
                         row
                     )
