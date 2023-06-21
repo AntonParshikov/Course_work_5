@@ -1,5 +1,5 @@
 import psycopg2
-
+import json
 
 class DBManager:
     def __init__(self, dbname):

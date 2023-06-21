@@ -2,7 +2,6 @@ import requests
 import json
 import csv
 import psycopg2
-from sqlalchemy import create_engine
 
 
 def hh_get_vacancies(vacancy_name):
