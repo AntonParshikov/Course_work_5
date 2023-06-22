@@ -116,9 +116,10 @@ def clear_table():
 
 
 if __name__ == '__main__':
-    user_input = input('Введите название вакансии: \n')
-    csv_writer(user_input)
-    create_table()
-    clear_table()
-    table_add_data()
-    connection.close()
+    # user_input = input('Введите название вакансии: \n')
+    # csv_writer(user_input)
+    # create_table()
+    # clear_table()
+    # table_add_data()
+    # connection.close()
+    pass
