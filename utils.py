@@ -27,11 +27,17 @@ def vacancies_pars(js_obj):
     all_vacancy = []
     for obj in js_obj['items']:
         salary = obj.get('salary') or {}
+        salary_from = salary.get('from')
+        salary_to = salary.get('to')
+        if salary_from is not None:
+            salary_from = int(salary_from)
+        if salary_to is not None:
+            salary_to = int(salary_to)
         all_vacancy.append({
             'id': obj['id'],
             'vacancy_name': obj['name'],
-            'salary_from': salary.get('from', 0),
-            'salary_to': salary.get('to', 0),
+            'salary_from': salary_from or 0,
+            'salary_to': salary_to or 0,
             'company_name': obj['employer']['name'],
             'url': obj['url'],
             'requirements': obj['snippet']['requirement']
@@ -69,8 +75,8 @@ def create_table():
                     CREATE TABLE IF NOT EXISTS vacancies(
                         id INT PRIMARY KEY,
                         vacancy_name TEXT,
-                        salary_from TEXT,
-                        salary_to TEXT,
+                        salary_from INT,
+                        salary_to INT,
                         company_name TEXT,
                         url TEXT,
                         requirements TEXT
@@ -80,6 +86,8 @@ def create_table():
 
 
 def table_add_data():
+    """Добавление данных в таблицу"""
+
     with connection as conn:
         with conn.cursor() as cursor:
             with open('vacancies.csv', 'r', encoding='utf-8') as f:

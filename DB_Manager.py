@@ -1,7 +1,10 @@
 import psycopg2
 import json
 
+
 class DBManager:
+    """Класс для работы с БД"""
+
     def __init__(self, dbname):
         self.dbname = dbname
         self.user = 'postgres'
@@ -18,6 +21,8 @@ class DBManager:
         return conn
 
     def get_companies_and_vacancies_count(self):
+        """Получение количества вакансий компании"""
+
         conn = self.connect()
         cur = conn.cursor()
         cur.execute("""
@@ -32,6 +37,8 @@ class DBManager:
         return result
 
     def get_all_vacancies(self):
+        """Получение всех вакансий"""
+
         conn = self.connect()
         cur = conn.cursor()
         cur.execute("""
@@ -45,6 +52,8 @@ class DBManager:
         return result
 
     def get_avg_salary(self):
+        """Получение средней з/п"""
+
         conn = self.connect()
         cur = conn.cursor()
         cur.execute("""
@@ -57,6 +66,8 @@ class DBManager:
         return result
 
     def get_vacancies_with_higher_salary(self):
+        """Получение информации о вакансии с з/п выше средней по всем вакансиям"""
+
         avg_salary = self.get_avg_salary()
         conn = self.connect()
         cur = conn.cursor()
@@ -72,6 +83,8 @@ class DBManager:
         return result
 
     def get_vacancies_with_keyword(self, keyword):
+        """Получение вакансии по ключевому слову"""
+
         conn = self.connect()
         cur = conn.cursor()
         cur.execute(f"""
@@ -88,9 +101,9 @@ class DBManager:
 
 if __name__ == '__main__':
     client = DBManager('Course_5_database')
-    # vac = client.get_vacancies_with_keyword('QA')
+    # vac_with_keyword = client.get_vacancies_with_keyword('QA')
     # avg_salary = client.get_avg_salary()
-    # all_vacancies = client.get_all_vacancies()
+    # get_vacancies = client.get_all_vacancies()
     # higher_salary = client.get_vacancies_with_higher_salary()
+    # get_info = client.get_companies_and_vacancies_count()
     pass
-
