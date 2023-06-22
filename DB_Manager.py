@@ -21,7 +21,7 @@ class DBManager:
         return conn
 
     def get_companies_and_vacancies_count(self):
-        """Получение количества вакансий компании"""
+        """Получение названия компании и количество открытых вакансий"""
 
         conn = self.connect()
         cur = conn.cursor()
@@ -100,10 +100,4 @@ class DBManager:
 
 
 if __name__ == '__main__':
-    client = DBManager('Course_5_database')
-    # vac_with_keyword = client.get_vacancies_with_keyword('QA')
-    # avg_salary = client.get_avg_salary()
-    # get_vacancies = client.get_all_vacancies()
-    # higher_salary = client.get_vacancies_with_higher_salary()
-    # get_info = client.get_companies_and_vacancies_count()
     pass

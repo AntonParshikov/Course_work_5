@@ -46,7 +46,7 @@ def vacancies_pars(js_obj):
     return all_vacancy
 
 
-def csv_writer(user_input=input('Введите вакансию: ')):
+def csv_writer(user_input):
     """Сохранение данных в формате csv"""
 
     cols = ['id', 'vacancy_name', 'salary_from', 'salary_to', 'company_name', 'url', 'requirements']
@@ -57,7 +57,7 @@ def csv_writer(user_input=input('Введите вакансию: ')):
         wr.writerows(hh_get_vacancies(user_input))
 
 
-# Сохранение данных в базу данных
+# Соединение с базой данных
 
 connection = psycopg2.connect(host="localhost",
                               database="Course_5_database",
@@ -107,7 +107,18 @@ def table_add_data():
                     )
 
 
+def clear_table():
+    """Очистка таблицы"""
+
+    with connection as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("TRUNCATE TABLE vacancies")
+
+
 if __name__ == '__main__':
-    csv_writer()
+    user_input = input('Введите название вакансии: \n')
+    csv_writer(user_input)
     create_table()
+    clear_table()
     table_add_data()
+    connection.close()
